@@ -12,9 +12,7 @@ Tema: **IA e meio ambiente**. Equipe: *Cientistas da Computaria*.
 
 Não precisa instalar nada além do Python 3, basta apenas abrir seu CMD(Prompt de Comando) e fazer os seguintes passos:
 
-1 - Clonar o repositorio usando o comando "git clone https://github.com/PedroVargas1204/Projeto---APC.git"
-2 -  Acessar o diretório usando comando cd
-3 - Rodar o arquivo main
+Clonar o repositorio usando o comando "git clone https://github.com/PedroVargas1204/Projeto---APC.git", Acessar o diretório usando comando cd e por fim Rodar o arquivo main
 
 ```bash
 git clone https://github.com/PedroVargas1204/Projeto---APC.git
