@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 data/historico.csv
+data/inventario.json
+data/historico.json
+data/usuario.json
+data/receitas_cache.json

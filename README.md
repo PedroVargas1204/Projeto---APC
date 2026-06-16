@@ -1,72 +1,60 @@
 # Geladeira Zero 🥗
 
-Software em **Python 3** que ajuda famílias e estudantes a **reduzir o desperdício
-de alimentos**. Mantém um inventário do que existe em casa, alerta sobre itens
-próximos do vencimento, sugere receitas com IA Generativa usando o que está para
-estragar e calcula o impacto evitado (kg de alimento salvo, CO₂, água e dinheiro).
+Software em **Python 3** que ajuda a **reduzir o desperdício de alimentos**: mantém um
+inventário do que existe em casa, alerta sobre itens próximos do vencimento, sugere
+receitas com IA Generativa usando o que está para estragar e calcula o impacto evitado
+(kg de alimento salvo, CO₂, água e dinheiro).
 
-Projeto da disciplina **Algoritmos e Programação de Computadores (APC)** — 2026/1.
-Tema: **IA e meio ambiente**. Equipe: *Cientistas da Computaria*.
+Disciplina **APC — 2026/1**. Tema: **IA e meio ambiente**. Equipe: *Cientistas da Computaria*.
 
 ## Como rodar
 
-Não precisa instalar nada além do Python 3, basta apenas abrir seu CMD(Prompt de Comando) e fazer os seguintes passos:
-
-Clonar o repositorio usando o comando "git clone https://github.com/PedroVargas1204/Projeto---APC.git", Acessar o diretório usando comando cd e por fim Rodar o arquivo main
-
 ```bash
-git clone https://github.com/PedroVargas1204/Projeto---APC.git
 cd geladeira_zero
 python main.py
 ```
 
-Use o menu numerado. Os dados são salvos automaticamente em `data/*.json`
-entre execuções.
+Os dados são salvos automaticamente em `data/*.json` entre execuções. Sem chave de API,
+a IA cai no **fallback** e o programa funciona offline.
 
 ### IA de receitas (opcional)
-
-Sem chave de API, o programa funciona normalmente e gera receitas pelo
-**fallback** (cache/receita genérica) — ótimo para demonstrar offline.
-Para ativar a IA de verdade, defina as variáveis de ambiente:
-
 ```bash
 export IA_API_KEY="sua_chave"
 export IA_API_URL="https://endpoint-da-sua-api"
 pip install requests
 ```
 
-## Estrutura dos módulos
+## Organização do código
 
-| Arquivo            | Responsabilidade                                              | Conteúdos de APC                          |
-|--------------------|--------------------------------------------------------------|-------------------------------------------|
-| `main.py`          | Loop principal do menu; integra todos os módulos.            | while, if/elif, funções, módulos          |
-| `interface.py`     | Telas (CLI) e **validação de toda entrada** do usuário.      | strings, while, condicionais              |
-| `inventario.py`    | Cadastrar/listar itens, busca por nome, validade estimada.   | listas, dicionários, for, strings         |
-| `alertas.py`       | Quais itens vencem e ordenação por urgência.                 | datetime, for, tuplas, condicionais       |
-| `ia.py`            | Monta prompt, chama a IA, timeout e fallback.                | strings, try/except, requests             |
-| `impacto.py`       | kg salvo, CO₂, água e dinheiro; agregação por categoria.     | for, floats, tuplas (retorno múltiplo)    |
-| `persistencia.py`  | Lê/grava JSON e exporta histórico para CSV.                  | json, csv, arquivos, exceções             |
+Todos os arquivos ficam na raiz (estrutura plana, fácil de importar). Dois princípios
+guiam a organização para facilitar alterações:
 
-## Dados (`data/`)
+1. **Tudo que é ajuste fica em `config.py`** — limite de alerta, timeout da IA, período
+   do impacto, peso por unidade, nomes dos arquivos. Mudar um parâmetro é editar uma
+   linha lá, sem caçar números pelos módulos.
+2. **Lógica separada da tela** — funções de cálculo (`calcular_alertas`,
+   `calcular_impacto`, `sugerir_validade`, `consultar_ia`...) não usam `print`/`input`;
+   quem desenha as telas são as funções `exibir_*`. Isso permite trocar a interface
+   (ex.: CLI → Streamlit) sem mexer na lógica.
 
-- `base_alimentos.json` — base de alimentos com validade típica, preço/kg, CO₂/kg e água/kg.
-- `inventario.json` — itens atualmente em casa.
-- `historico.json` — itens consumidos ou descartados (base do cálculo de impacto).
-- `usuario.json` — perfil e preferências (vegetariano, alergias, tempo de preparo).
-- `receitas_cache.json` — cache de receitas geradas pela IA (fallback).
+| Arquivo            | Responsabilidade                                          |
+|--------------------|-----------------------------------------------------------|
+| `config.py`        | **Todos os ajustes do sistema num lugar só.**             |
+| `main.py`          | Loop do menu; integra todos os módulos.                   |
+| `interface.py`     | Telas (CLI) e validação de entrada.                       |
+| `inventario.py`    | Cadastrar/listar itens, busca, validade estimada.         |
+| `alertas.py`       | Quais itens vencem e ordenação por urgência.              |
+| `ia.py`            | Prompt, chamada à IA, timeout, cache e fallback.          |
+| `impacto.py`       | kg salvo, CO₂, água e dinheiro; agregação por categoria.  |
+| `persistencia.py`  | Lê/grava JSON e exporta CSV.                              |
 
-## Requisitos atendidos
+Dados em `data/`: `base_alimentos.json` (catálogo, versionado) e os arquivos de runtime
+(`inventario`, `historico`, `usuario`, `receitas_cache`), que o programa recria sozinho.
 
-RF01–RF11 (menu, cadastro, validade estimada, inventário ordenado, alertas,
-receita por IA, marcar consumido/descartado, impacto, economia, preferências, CSV)
-e RNF01–RNF07 (Python puro, código comentado/docstrings, validação de entradas,
-persistência JSON, timeout+fallback da IA, menu rápido).
-
-## Próximos passos
-
-- Ampliar `base_alimentos.json` para 80+ itens (com fontes EMBRAPA/CEMPRE).
-- Integrar uma API de IA real (Gemini/OpenAI/Claude) em `ia.py`.
-- Migrar a interface para **Streamlit** reaproveitando todo o backend.
-- Rodar o experimento com voluntários e analisar com `pandas` + `scipy`.
+## Próximos passos (melhorias por integrante)
+- **A:** abrir alertas na entrada; refatorar o menu para dicionário de funções; cores ANSI.
+- **B:** ampliar a base para 80+; busca difusa (`difflib`); corrigir o `or 7`.
+- **C:** conectar a API real (Gemini); filtrar ingredientes por alergia antes do prompt.
+- **D:** registrar `data_evento` ao consumir; backup antes de salvar; peso por unidade na base.
 
 Licença: MIT.
