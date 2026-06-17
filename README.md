@@ -10,7 +10,7 @@ Disciplina **APC — 2026/1**. Tema: **IA e meio ambiente**. Equipe: *Cientistas
 ## Como rodar
 
 ```bash
-cd geladeira_zero
+cd Projeto---APC
 python main.py
 ```
 
