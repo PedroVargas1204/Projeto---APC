@@ -8,8 +8,12 @@ receitas com IA Generativa usando o que está para estragar e calcula o impacto 
 Disciplina **APC — 2026/1**. Tema: **IA e meio ambiente**. Equipe: *Cientistas da Computaria*.
 
 ## Como rodar
+Copiar o repositório, usar o comando cd(change directory para acessar a pasta clonada e rodar o programa usando o comando python main.py
+
+Caso não funcione o comando git acessar esse link e fazer download para windowns x64 https://git-scm.com/install/windows
 
 ```bash
+git clone https://github.com/PedroVargas1204/Projeto---APC
 cd Projeto---APC
 python main.py
 ```
